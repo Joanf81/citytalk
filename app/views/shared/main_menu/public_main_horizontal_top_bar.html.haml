@@ -1,0 +1,45 @@
+%nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-between
+  %a.navbar-brand{:href => root_path}= t('app_title')
+  %button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", :type => "button"}
+    %span.navbar-toggler-icon
+
+  %span.navbar-text
+    %ul.navbar-nav.mr-auto
+      %li.nav-item
+        %form.form-inline.my-2.my-md-0
+          %input.form-control.mr-sm-2{"aria-label" => "Search", :placeholder => t('views.shared.main_menu.find_placeholder'), :type => "search"}/
+          %button.btn.btn-outline-success.my-2.my-sm-0{:type => "submit"}= t('views.shared.main_menu.find_button')
+
+      - if user_signed_in?
+        %li.nav-item{style: "margin-right: 50px;"}
+          %form.form-inline.my-2.my-md-0
+            = link_to "Nuevo artículo", new_article_path, method: :get, class: "btn btn-outline-primary", style: "color: #007bff"
+        %li.nav-item{style: "margin-rigth: 10px;"}
+          %span.navbar-text
+            = t('views.shared.main_menu.hola')
+        %li.nav-item.dropdown
+          %a#navbarDropdown.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#", :role => "button"}
+            %strong= current_user.name
+          .dropdown-menu{"aria-labelledby" => "navbarDropdown"}
+            = link_to t('views.shared.main_menu.show_my_profile'), my_profile_path, :class => 'dropdown-item'
+            = link_to t('views.shared.main_menu.edit_my_profile'), edit_user_registration_path, :class => 'dropdown-item'
+            - if current_user.webmaster?
+              .dropdown-divider
+              = link_to "Panel de webmaster", webmaster_path, :class => 'dropdown-item'
+            .dropdown-divider
+            = link_to t('views.shared.main_menu.logout'), destroy_user_session_path, method: :delete, :class => 'dropdown-item'
+            %a.dropdown-item{:href => "#"}= t('views.shared.main_menu.remove_account')
+        %li.nav-item
+          %span.navbar-text
+            = t('views.shared.main_menu.welcome_again')
+
+      - else
+        %li.nav-item
+          %span.navbar-text
+            = t('views.shared.main_menu.welcome')
+          %span.navbar-text
+            = link_to t('views.shared.main_menu.login'), new_user_session_path, :class => 'navbar-link'
+          %span.navbar-text
+            o
+          %span.navbar-text
+            = link_to t('views.shared.main_menu.register'), new_user_registration_path, :class => 'navbar-link'
